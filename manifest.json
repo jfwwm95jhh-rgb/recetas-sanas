@@ -1,0 +1,9 @@
+{
+  "name": "RECETAS SANAS",
+  "short_name": "RECETAS SANAS",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f7f7f5",
+  "theme_color": "#f2c400",
+  "icons": []
+}
