@@ -1,4 +1,4 @@
-const CACHE = "recetas-sanas-v2";
+const CACHE = "recetas-sanas-v3";
 
 self.addEventListener("install", event => {
   event.waitUntil(
