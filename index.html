@@ -1,1 +1,1958 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f2c400">
+<link rel="manifest" href="manifest.json">
+<title>RECETAS SANAS</title>
 
+<style>
+:root{
+  --yellow:#f2c400;
+  --ink:#171717;
+  --muted:#777;
+  --line:#d8d8d8;
+  --bg:#f7f7f5;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+button,input,textarea,select{font:inherit}
+button{
+  border:0;
+  background:none;
+  color:inherit;
+  cursor:pointer;
+}
+
+.app{
+  max-width:1100px;
+  margin:auto;
+  min-height:100vh;
+  padding:22px 18px 105px;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  border-bottom:4px solid var(--ink);
+  padding-bottom:14px;
+}
+
+.brand{
+  font-size:29px;
+  font-weight:900;
+  letter-spacing:-1.5px;
+  line-height:.9;
+}
+
+.brand span{
+  display:block;
+  font-size:18px;
+  letter-spacing:1px;
+}
+
+.icon{
+  font-size:28px;
+  font-weight:900;
+}
+
+.search{
+  margin:20px 0 12px;
+  border:3px solid var(--ink);
+  background:white;
+  padding:14px 16px;
+  font-weight:700;
+  width:100%;
+  outline:none;
+}
+
+.chips{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  padding:4px 0 15px;
+}
+
+.chip{
+  white-space:nowrap;
+  border:2px solid var(--ink);
+  padding:8px 12px;
+  background:white;
+  font-weight:800;
+}
+
+.chip.on{background:var(--yellow)}
+
+.section{margin-top:18px}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.section-title{
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:1.5px;
+}
+
+.count{
+  font-weight:900;
+  color:var(--muted);
+}
+
+.card{
+  background:white;
+  border:2px solid var(--ink);
+  padding:14px;
+  margin-bottom:10px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:12px;
+}
+
+.card h3{
+  margin:0 0 7px;
+  font-size:20px;
+}
+
+.meta{
+  font-size:12px;
+  font-weight:800;
+  color:#666;
+  text-transform:uppercase;
+}
+
+.fav{
+  font-size:25px;
+}
+
+.fab{
+  position:fixed;
+  right:20px;
+  bottom:78px;
+  background:var(--yellow);
+  border:3px solid var(--ink);
+  width:62px;
+  height:62px;
+  font-size:35px;
+  font-weight:900;
+  box-shadow:4px 4px 0 var(--ink);
+  z-index:6;
+}
+
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  border-top:3px solid var(--ink);
+  display:flex;
+  justify-content:center;
+  z-index:5;
+}
+
+.nav button{
+  width:33.333%;
+  padding:15px 4px;
+  font-size:14px;
+  font-weight:900;
+}
+
+.nav button.on{background:var(--yellow)}
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:10;
+  display:flex;
+  align-items:flex-end;
+}
+
+.sheet{
+  background:var(--bg);
+  width:100%;
+  max-width:700px;
+  margin:auto;
+  padding:24px 18px 30px;
+  border:3px solid var(--ink);
+  max-height:92vh;
+  overflow:auto;
+}
+
+.sheet h2{
+  margin:0 0 18px;
+  font-size:27px;
+}
+
+.field{margin:14px 0}
+
+.field label{
+  display:block;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:1px;
+  margin-bottom:6px;
+}
+
+.field input,
+.field textarea,
+.field select{
+  width:100%;
+  border:2px solid var(--ink);
+  background:white;
+  padding:12px;
+  outline:none;
+}
+
+.field textarea{min-height:100px}
+
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.grid3{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  margin-top:18px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  border:2px solid var(--ink);
+  padding:12px 15px;
+  font-weight:900;
+  background:white;
+}
+
+.btn.primary{background:var(--yellow)}
+
+.empty{
+  text-align:center;
+  padding:45px 15px;
+  color:#666;
+  font-weight:800;
+}
+
+.step{
+  display:flex;
+  gap:6px;
+  margin-bottom:18px;
+}
+
+.step b{
+  background:var(--ink);
+  color:white;
+  padding:6px 9px;
+}
+
+.ingredient{
+  display:grid;
+  grid-template-columns:75px 120px 1fr 34px;
+  gap:6px;
+  margin-bottom:7px;
+}
+
+.ingredient input,
+.ingredient select{
+  border:2px solid var(--ink);
+  padding:9px;
+  background:white;
+  width:100%;
+}
+
+.recipe-img{
+  width:100%;
+  max-height:280px;
+  object-fit:cover;
+  border:2px solid var(--ink);
+  margin-bottom:15px;
+}
+
+.detail h1{
+  font-size:34px;
+  line-height:.95;
+  margin:5px 0 10px;
+}
+
+.yellowbox{
+  background:var(--yellow);
+  border:2px solid var(--ink);
+  padding:13px;
+  margin:12px 0;
+  font-weight:900;
+}
+
+.detail ul{padding-left:20px}
+.detail li{margin:8px 0}
+
+.locked{
+  border:2px dashed var(--ink);
+  padding:12px;
+  background:#fff;
+}
+
+.userbox{
+  background:white;
+  border:3px solid var(--ink);
+  padding:18px;
+  margin:15px 0;
+}
+
+.userchoice{
+  border:2px solid var(--ink);
+  background:white;
+  padding:14px;
+  margin:8px 0;
+  width:100%;
+  text-align:left;
+  font-weight:900;
+}
+
+.userchoice.on{background:var(--yellow)}
+
+.listrow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.check{
+  width:25px;
+  height:25px;
+  border:2px solid var(--ink);
+  background:white;
+  flex:none;
+}
+
+.check.on{
+  background:var(--yellow);
+}
+
+@media(min-width:700px){
+  .app{padding:30px 34px 110px}
+  .overlay{align-items:center}
+  .sheet{border:3px solid var(--ink)}
+}
+</style>
+</head>
+
+<body>
+<div id="root"></div>
+
+<script>
+const CATS={
+  momento:[
+    "DESAYUNO","ALMUERZO","COMIDA","MERIENDA","CENA"
+  ],
+  tipo:[
+    "ENSALADA","PASTA","ARROZ","LEGUMBRES","SOPA / CREMA",
+    "CARNE","PESCADO","MARISCO","HUEVOS","VERDURAS",
+    "PIZZA","BOCADILLOS","ENTRANTES","GUARNICIONES",
+    "POSTRES","REPOSTERÍA"
+  ],
+  car:[
+    "SALUDABLE","RÁPIDA","ALTA EN PROTEÍNA","VEGETARIANA",
+    "VEGANA","ECONÓMICA","PARA INVITADOS"
+  ]
+};
+
+const units=[
+  "g","kg","ml","l","unidad","cucharadita",
+  "cucharada","pizca","al gusto","OTRA / ESCRIBIR"
+];
+
+let recipes=JSON.parse(localStorage.getItem("rs_recipes")||"[]");
+let drafts=JSON.parse(localStorage.getItem("rs_drafts")||"[]");
+let list=JSON.parse(localStorage.getItem("rs_list")||"[]");
+let users=JSON.parse(localStorage.getItem("rs_users")||"null");
+
+if(!users){
+  users=[
+    {id:"alex",name:"ALEX"},
+    {id:"marta",name:"MARTA"}
+  ];
+  localStorage.setItem("rs_users",JSON.stringify(users));
+}
+
+let activeUser=localStorage.getItem("rs_active_user")||"alex";
+let page="recipes";
+let query="";
+let filters=[];
+let editing=null;
+let step=1;
+
+function save(){
+  localStorage.setItem("rs_recipes",JSON.stringify(recipes));
+  localStorage.setItem("rs_drafts",JSON.stringify(drafts));
+  localStorage.setItem("rs_list",JSON.stringify(list));
+  localStorage.setItem("rs_users",JSON.stringify(users));
+  localStorage.setItem("rs_active_user",activeUser);
+}
+
+function esc(s=""){
+  return String(s).replace(/[&<>"']/g,m=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  }[m]));
+}
+
+function cats(){
+  return [...CATS.momento,...CATS.tipo,...CATS.car];
+}
+
+function userName(id){
+  let u=users.find(x=>x.id===id);
+  return u?u.name:"";
+}
+
+function render(){
+  let root=document.getElementById("root");
+
+  if(page==="detail") return renderDetail(root,editing);
+  if(page==="list") return renderList(root);
+  if(page==="settings") return renderSettings(root);
+
+  let filtered=recipes.filter(r=>{
+    let matchesQuery=
+      !query ||
+      JSON.stringify(r).toLowerCase().includes(query.toLowerCase());
+
+    let matchesFilter=
+      filters.length===0 ||
+      filters.some(f=>{
+        if(f==="FAVORITAS") return r.favorite===true;
+        return (r.categories||[]).includes(f);
+      });
+
+    return matchesQuery && matchesFilter;
+  });
+
+  root.innerHTML=`
+  <main class="app">
+
+    <header class="top">
+      <div class="brand">
+        RECETAS
+        <span>SANAS</span>
+      </div>
+
+      <button class="icon"
+        onclick="page='settings';render()">
+        ⚙️
+      </button>
+    </header>
+
+    <input
+      class="search"
+      placeholder="BUSCAR RECETAS O INGREDIENTES"
+      value="${esc(query)}"
+      oninput="query=this.value;render()"
+    >
+
+    <div class="chips">
+      ${["TODAS",...CATS.momento,...CATS.tipo].map(c=>`
+        <button
+          class="chip ${
+            (c==="TODAS"&&filters.length===0) ||
+            (filters.includes(c)&&c!=="TODAS")
+            ?"on":""
+          }"
+          onclick="toggleFilter('${esc(c)}')">
+          ${esc(c)}
+        </button>
+      `).join("")}
+    </div>
+
+    ${
+      drafts.length
+      ?`
+      <section class="section">
+        <div class="section-head">
+          <div class="section-title">
+            BORRADORES — ${drafts.length}
+          </div>
+        </div>
+
+        ${
+          drafts.map(d=>`
+            <button
+              class="card"
+              style="width:100%;text-align:left"
+              onclick="openDraft('${d.id}')">
+
+              <div>
+                <h3>${esc(d.name||"RECETA SIN TÍTULO")}</h3>
+
+                <div class="meta">
+                  ${d.owner?userName(d.owner):""}
+                </div>
+
+                <div class="draftbar"
+                  style="height:9px;background:#ddd;margin-top:9px">
+                  <i
+                    style="
+                    display:block;
+                    height:100%;
+                    background:var(--yellow);
+                    width:${d.progress||20}%
+                    ">
+                  </i>
+                </div>
+              </div>
+
+              <b>${d.progress||20}%</b>
+            </button>
+          `).join("")
+        }
+      </section>
+      `
+      :""
+    }
+
+    <section class="section">
+
+      <div class="section-head">
+        <div class="section-title">RECETAS</div>
+        <div class="count">${filtered.length}</div>
+      </div>
+
+      ${
+        filtered.length
+        ?
+        filtered.map(r=>`
+          <div
+            class="card"
+            style="width:100%;text-align:left">
+
+            <button
+              style="text-align:left"
+              onclick="openRecipe('${r.id}')">
+
+              <h3>${esc(r.name)}</h3>
+
+              <div class="meta">
+                ${esc((r.categories||[]).join(" · "))}
+                · ${r.time} MIN
+                · ${esc(r.difficulty)}
+              </div>
+
+              ${
+                r.owner
+                ?`<div class="meta" style="margin-top:6px">
+                    ${esc(userName(r.owner))}
+                  </div>`
+                :""
+              }
+
+            </button>
+
+            <button
+              class="fav"
+              onclick="event.stopPropagation();toggleFavorite('${r.id}')">
+              ${r.favorite?"♥":"♡"}
+            </button>
+
+          </div>
+        `).join("")
+        :
+        `<div class="empty">NO HAY RECETAS</div>`
+      }
+
+    </section>
+
+    <button class="fab" onclick="newMenu()">+</button>
+
+    ${nav()}
+
+  </main>
+  `;
+}
+
+function nav(){
+  return `
+  <nav class="nav">
+
+    <button
+      class="${page==='recipes'&&filters.length===0?'on':''}"
+      onclick="filters=[];page='recipes';query='';render()">
+      RECETAS
+    </button>
+
+    <button
+      class="${filters.includes('FAVORITAS')?'on':''}"
+      onclick="filters=['FAVORITAS'];page='recipes';query='';render()">
+      ♥ FAVORITAS
+    </button>
+
+    <button
+      class="${page==='list'?'on':''}"
+      onclick="page='list';render()">
+      🛒 LISTA
+    </button>
+
+  </nav>
+  `;
+}
+
+function toggleFilter(c){
+  if(c==="TODAS"){
+    filters=[];
+  }else{
+    filters=filters.includes(c)
+      ?filters.filter(x=>x!==c)
+      :[...filters,c];
+  }
+
+  render();
+}
+
+function toggleFavorite(id){
+  let r=recipes.find(x=>x.id===id);
+  if(!r)return;
+
+  r.favorite=!r.favorite;
+  save();
+  render();
+}
+
+function newMenu(){
+  openForm({newRecipe:true});
+}
+
+function openDraft(id){
+  let d=drafts.find(x=>x.id===id);
+  if(d)openForm(d);
+}
+
+function openRecipe(id){
+  editing=recipes.find(x=>x.id===id);
+  page="detail";
+  render();
+}
+
+function renderDetail(root,r){
+
+  if(!r){
+    page="recipes";
+    return render();
+  }
+
+  let scale=r.servings||r.initial||4;
+  let factor=scale/(r.initial||4);
+
+  root.innerHTML=`
+  <main class="app detail">
+
+    <button class="btn"
+      onclick="page='recipes';render()">
+      ← RECETAS
+    </button>
+
+    ${
+      r.photo
+      ?`<img class="recipe-img" src="${r.photo}">`
+      :""
+    }
+
+    <h1>${esc(r.name)}</h1>
+
+    <div class="meta">
+      ${esc((r.categories||[]).join(" · "))}
+    </div>
+
+    ${
+      r.owner
+      ?`<div class="meta" style="margin-top:7px">
+          CREADA POR ${esc(userName(r.owner))}
+        </div>`
+      :""
+    }
+
+    <div class="yellowbox">
+
+      COMENSALES:
+
+      ${
+        [2,4,6,8,10,12]
+        .filter(n=>n>=r.min&&n<=r.max)
+        .map(n=>`
+          <button
+            style="
+            font-weight:900;
+            padding:5px 8px;
+            text-decoration:${n===scale?"underline":"none"}
+            "
+            onclick="changeServings('${r.id}',${n})">
+            ${n}
+          </button>
+        `).join(" · ")
+      }
+
+    </div>
+
+    <div class="meta">
+      ${r.time} MIN · ${esc(r.difficulty)}
+    </div>
+
+    <h2>INGREDIENTES</h2>
+
+    <ul>
+      ${
+        (r.ingredients||[]).map(i=>`
+          <li>
+            <b>
+              ${formatQty(Number(i.qty||0)*factor)}
+              ${esc(i.unit||"")}
+            </b>
+            ${esc(i.name||"")}
+          </li>
+        `).join("")
+      }
+    </ul>
+
+    <button
+      class="btn primary"
+      onclick="addSelected('${r.id}')">
+      🛒 AÑADIR A LISTA
+    </button>
+
+    <h2>PREPARACIÓN</h2>
+
+    ${
+      (r.steps||[]).map((s,i)=>`
+        <p>
+          <b>${String(i+1).padStart(2,"0")}</b>
+          ${esc(s)}
+        </p>
+      `).join("")
+    }
+
+    ${
+      r.notes
+      ?`
+        <h2>NOTAS</h2>
+        <div class="locked">${esc(r.notes)}</div>
+      `
+      :""
+    }
+
+    <div class="actions">
+
+      <button
+        class="btn"
+        onclick="editRecipe('${r.id}')">
+        EDITAR
+      </button>
+
+      <button
+        class="btn"
+        onclick="shareRecipe('${r.id}')">
+        COMPARTIR
+      </button>
+
+      <button
+        class="btn"
+        onclick="deleteRecipe('${r.id}')">
+        ELIMINAR
+      </button>
+
+    </div>
+
+    ${nav()}
+
+  </main>
+  `;
+}
+
+function formatQty(n){
+  if(Number.isInteger(n))return n;
+  return (Math.round(n*100)/100)
+    .toString()
+    .replace(".",",");
+}
+
+function changeServings(id,n){
+  let r=recipes.find(x=>x.id===id);
+  if(!r)return;
+
+  r.servings=n;
+  save();
+  renderDetail(document.getElementById("root"),r);
+}
+
+function editRecipe(id){
+  let r=recipes.find(x=>x.id===id);
+  if(r)openForm({...r,edit:true});
+}
+
+function deleteRecipe(id){
+  if(confirm("¿Eliminar receta?")){
+    recipes=recipes.filter(r=>r.id!==id);
+    save();
+    page="recipes";
+    render();
+  }
+}
+
+function shareRecipe(id){
+
+  let r=recipes.find(x=>x.id===id);
+  if(!r)return;
+
+  let text=
+`${r.name}
+${r.time} min · ${r.difficulty}
+
+INGREDIENTES
+`+
+r.ingredients
+  .map(i=>`${i.qty} ${i.unit} ${i.name}`)
+  .join("\n")+
+`
+
+PREPARACIÓN
+`+
+r.steps
+  .map((s,i)=>`${i+1}. ${s}`)
+  .join("\n");
+
+  if(navigator.share){
+    navigator.share({
+      title:r.name,
+      text:text
+    });
+  }else{
+    navigator.clipboard
+      .writeText(text)
+      .then(()=>alert("Receta copiada al portapapeles"));
+  }
+}
+
+function addSelected(id){
+
+  let r=recipes.find(x=>x.id===id);
+  if(!r)return;
+
+  let factor=
+    (r.servings||r.initial||4)/
+    (r.initial||4);
+
+  r.ingredients.forEach(i=>{
+    list.push({
+      name:i.name,
+      qty:Number(i.qty||0)*factor,
+      unit:i.unit,
+      bought:false
+    });
+  });
+
+  save();
+
+  alert("Ingredientes añadidos a la lista");
+}
+
+function renderList(root){
+
+  let grouped={};
+
+  list.forEach((x,i)=>{
+    let key=
+      x.name.toLowerCase().trim()+
+      "|" +
+      x.unit;
+
+    if(!grouped[key])grouped[key]=[];
+    grouped[key].push(i);
+  });
+
+  root.innerHTML=`
+  <main class="app">
+
+    <header class="top">
+      <div class="brand">
+        LISTA
+        <span>DE COMPRA</span>
+      </div>
+    </header>
+
+    <section class="section">
+
+      ${
+        list.length
+        ?
+        Object.values(grouped).map(ids=>{
+
+          let x=list[ids[0]];
+
+          let qty=ids.reduce(
+            (s,i)=>s+Number(list[i].qty||0),
+            0
+          );
+
+          let bought=ids.every(i=>list[i].bought);
+
+          return `
+          <div class="card">
+
+            <button
+              style="text-align:left;width:100%"
+              onclick="toggleListGroup(${JSON.stringify(ids)})">
+
+              <div class="listrow">
+
+                <div class="check ${bought?"on":""}">
+                  ${bought?"✓":""}
+                </div>
+
+                <h3 style="
+                  margin:0;
+                  ${bought
+                    ?"text-decoration:line-through;color:#888"
+                    :""}
+                ">
+                  ${esc(formatQty(qty))}
+                  ${esc(x.unit)}
+                  ${esc(x.name)}
+                </h3>
+
+              </div>
+
+            </button>
+
+          </div>
+          `;
+
+        }).join("")
+        :
+        `<div class="empty">LISTA VACÍA</div>`
+      }
+
+    </section>
+
+    <div class="actions">
+
+      <button
+        class="btn"
+        onclick="addManualItem()">
+        + AÑADIR
+      </button>
+
+      <button
+        class="btn"
+        onclick="list=list.filter(x=>!x.bought);save();renderList(document.getElementById('root'))">
+        LIMPIAR COMPRADOS
+      </button>
+
+    </div>
+
+    ${nav()}
+
+  </main>
+  `;
+}
+
+function toggleListGroup(ids){
+
+  let newState=
+    !ids.every(i=>list[i].bought);
+
+  ids.forEach(i=>{
+    list[i].bought=newState;
+  });
+
+  save();
+  renderList(document.getElementById("root"));
+}
+
+function addManualItem(){
+
+  let name=prompt("Producto");
+
+  if(!name||!name.trim())return;
+
+  let qty=prompt("Cantidad","1");
+  if(qty===null)return;
+
+  let unit=prompt("Unidad","unidad");
+  if(unit===null)return;
+
+  list.push({
+    name:name.trim(),
+    qty:Number(qty)||1,
+    unit:unit.trim()||"unidad",
+    bought:false
+  });
+
+  save();
+  renderList(document.getElementById("root"));
+}
+
+function renderSettings(root){
+
+  root.innerHTML=`
+  <main class="app">
+
+    <header class="top">
+
+      <div class="brand">
+        CONFIGU
+        <span>RACIÓN</span>
+      </div>
+
+      <button
+        class="icon"
+        onclick="page='recipes';render()">
+        ×
+      </button>
+
+    </header>
+
+    <section class="section">
+
+      <div class="section-title">
+        USUARIOS
+      </div>
+
+      <div class="userbox">
+
+        <div class="meta">
+          USUARIO ACTIVO
+        </div>
+
+        <h2 style="margin:7px 0 14px">
+          ${esc(userName(activeUser))}
+        </h2>
+
+        ${
+          users.map(u=>`
+            <button
+              class="userchoice ${u.id===activeUser?"on":""}"
+              onclick="selectUser('${u.id}')">
+
+              ${u.id===activeUser?"✓ ":""}
+              ${esc(u.name)}
+
+            </button>
+          `).join("")
+        }
+
+        <button
+          class="btn primary"
+          style="margin-top:10px"
+          onclick="addUser()">
+          + AÑADIR USUARIO
+        </button>
+
+      </div>
+
+      <div class="section-title">
+        CATEGORÍAS
+      </div>
+
+      <div class="card">
+
+        <div>
+          <h3>CATEGORÍAS</h3>
+
+          <div class="meta">
+            ${cats().length} CATEGORÍAS
+          </div>
+        </div>
+
+        <button
+          class="btn"
+          onclick="addCat()">
+          +
+        </button>
+
+      </div>
+
+      <div class="section-title">
+        DATOS
+      </div>
+
+      <div class="card">
+
+        <div>
+          <h3>RECETAS</h3>
+          <div class="meta">
+            ${recipes.length} RECETAS GUARDADAS
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <div>
+          <h3>BORRADORES</h3>
+          <div class="meta">
+            ${drafts.length} BORRADORES
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    ${nav()}
+
+  </main>
+  `;
+}
+
+function selectUser(id){
+
+  if(!users.some(u=>u.id===id))return;
+
+  activeUser=id;
+  save();
+  renderSettings(document.getElementById("root"));
+}
+
+function addUser(){
+
+  let name=prompt("Nombre del usuario");
+
+  if(!name||!name.trim())return;
+
+  name=name.trim().toUpperCase();
+
+  if(users.some(u=>u.name===name)){
+    alert("Ese usuario ya existe.");
+    return;
+  }
+
+  users.push({
+    id:"user_"+Date.now(),
+    name:name
+  });
+
+  save();
+  renderSettings(document.getElementById("root"));
+}
+
+function deleteUser(id){
+
+  if(users.length<=1){
+    alert("Debe existir al menos un usuario.");
+    return;
+  }
+
+  let u=users.find(x=>x.id===id);
+
+  if(!u)return;
+
+  if(!confirm("¿Eliminar el usuario "+u.name+"?"))return;
+
+  users=users.filter(x=>x.id!==id);
+
+  if(activeUser===id){
+    activeUser=users[0].id;
+  }
+
+  save();
+  renderSettings(document.getElementById("root"));
+}
+
+function addCat(){
+
+  let c=prompt("Nueva categoría");
+
+  if(!c||!c.trim())return;
+
+  c=c.trim().toUpperCase();
+
+  if(!cats().includes(c)){
+    CATS.car.push(c);
+  }
+
+  renderSettings(document.getElementById("root"));
+}
+
+function openForm(data={}){
+
+  let r={
+    id:data.id||crypto.randomUUID(),
+    name:data.name||"",
+    categories:data.categories||[],
+    min:data.min||2,
+    initial:data.initial||4,
+    max:data.max||12,
+    time:data.time||30,
+    difficulty:data.difficulty||"Fácil",
+    ingredients:data.ingredients||[
+      {qty:"",unit:"g",name:""}
+    ],
+    steps:data.steps||[""],
+    photo:data.photo||"",
+    notes:data.notes||"",
+    draft:data.draft,
+    progress:data.progress||20,
+    owner:data.owner||activeUser,
+    favorite:data.favorite||false
+  };
+
+  editing=r;
+  step=1;
+
+  document.getElementById("root").innerHTML=formHTML();
+}
+
+function formHTML(){
+
+  let r=editing;
+
+  return `
+  <main class="app">
+
+    <div class="step">
+      <b>0${step}</b>
+      <span>
+        ${
+          ["INFORMACIÓN","INGREDIENTES","PREPARACIÓN","REVISAR"]
+          [step-1]
+        }
+      </span>
+    </div>
+
+    ${
+      step===1
+      ?formInfo(r)
+      :step===2
+      ?formIngredients(r)
+      :step===3
+      ?formSteps(r)
+      :formReview(r)
+    }
+
+  </main>
+  `;
+}
+
+function formInfo(r){
+
+  return `
+  <h2>
+    ${r.edit?"EDITAR RECETA":"NUEVA RECETA"}
+  </h2>
+
+  <div class="field">
+
+    <label>NOMBRE *</label>
+
+    <input
+      id="name"
+      value="${esc(r.name)}"
+      placeholder="Nombre de la receta">
+
+  </div>
+
+  <div class="field">
+
+    <label>¿QUIÉN ERES?</label>
+
+    <div class="userbox">
+
+      ${
+        users.map(u=>`
+          <button
+            class="userchoice ${r.owner===u.id?"on":""}"
+            onclick="editing.owner='${u.id}';renderForm()">
+
+            ${r.owner===u.id?"✓ ":""}
+            ${esc(u.name)}
+
+          </button>
+        `).join("")
+      }
+
+      <button
+        class="btn"
+        onclick="addUserFromForm()">
+        + AÑADIR USUARIO
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="field">
+
+    <label>FOTO</label>
+
+    <div class="actions">
+
+      <button
+        class="btn"
+        onclick="photoCamera()">
+        CÁMARA
+      </button>
+
+      <button
+        class="btn"
+        onclick="photoFiles()">
+        FOTOS
+      </button>
+
+      <button
+        class="btn"
+        onclick="editing.photo='';next(2)">
+        AÑADIR DESPUÉS
+      </button>
+
+    </div>
+
+    <input
+      id="photoFile"
+      type="file"
+      accept="image/*"
+      style="display:none"
+      onchange="readPhoto(this)">
+
+    ${
+      r.photo
+      ?`<div class="meta" style="margin-top:8px">
+          FOTO AÑADIDA
+        </div>`
+      :""
+    }
+
+  </div>
+
+  <div class="field">
+
+    <label>
+      CATEGORÍAS * — SELECCIÓN MÚLTIPLE
+    </label>
+
+    <div
+      class="chips"
+      style="flex-wrap:wrap">
+
+      ${
+        cats().map(c=>`
+          <button
+            class="chip ${r.categories.includes(c)?"on":""}"
+            onclick="toggleFormCat('${esc(c)}')">
+            ${esc(c)}
+          </button>
+        `).join("")
+      }
+
+    </div>
+
+  </div>
+
+  <div class="field">
+
+    <label>COMENSALES</label>
+
+    <div class="grid3">
+
+      <div>
+        <label>INICIALES *</label>
+
+        <select id="initial">
+          ${
+            [2,4,6,8,10,12].map(n=>`
+              <option
+                value="${n}"
+                ${n===r.initial?"selected":""}>
+                ${n}
+              </option>
+            `).join("")
+          }
+        </select>
+      </div>
+
+      <div>
+        <label>MÍNIMO *</label>
+
+        <select id="min">
+          ${
+            [2,4,6,8,10,12].map(n=>`
+              <option
+                value="${n}"
+                ${n===r.min?"selected":""}>
+                ${n}
+              </option>
+            `).join("")
+          }
+        </select>
+      </div>
+
+      <div>
+        <label>MÁXIMO *</label>
+
+        <select id="max">
+          ${
+            [2,4,6,8,10,12].map(n=>`
+              <option
+                value="${n}"
+                ${n===r.max?"selected":""}>
+                ${n}
+              </option>
+            `).join("")
+          }
+        </select>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="grid2">
+
+    <div class="field">
+
+      <label>TIEMPO TOTAL (MIN) *</label>
+
+      <input
+        id="time"
+        type="number"
+        min="1"
+        value="${r.time}">
+
+    </div>
+
+    <div class="field">
+
+      <label>DIFICULTAD *</label>
+
+      <select id="difficulty">
+
+        ${
+          ["Fácil","Media","Difícil"].map(x=>`
+            <option
+              ${x===r.difficulty?"selected":""}>
+              ${x}
+            </option>
+          `).join("")
+        }
+
+      </select>
+
+    </div>
+
+  </div>
+
+  ${formActions()}
+  `;
+}
+
+function addUserFromForm(){
+
+  let name=prompt("Nombre del usuario");
+
+  if(!name||!name.trim())return;
+
+  name=name.trim().toUpperCase();
+
+  if(users.some(u=>u.name===name)){
+    alert("Ese usuario ya existe.");
+    return;
+  }
+
+  let u={
+    id:"user_"+Date.now(),
+    name:name
+  };
+
+  users.push(u);
+  editing.owner=u.id;
+
+  save();
+  renderForm();
+}
+
+function formIngredients(r){
+
+  return `
+  <h2>INGREDIENTES</h2>
+
+  <div class="meta" style="margin-bottom:12px">
+    CANTIDAD | UNIDAD | INGREDIENTE
+  </div>
+
+  ${
+    r.ingredients.map((i,n)=>`
+
+      <div class="ingredient">
+
+        <input
+          value="${esc(i.qty)}"
+          placeholder="cant."
+          onchange="editing.ingredients[${n}].qty=this.value">
+
+        <select
+          onchange="changeUnit(${n},this.value)">
+
+          ${
+            units.map(u=>`
+              <option
+                ${u===i.unit?"selected":""}>
+                ${esc(u)}
+              </option>
+            `).join("")
+          }
+
+        </select>
+
+        <input
+          value="${esc(i.name)}"
+          placeholder="ingrediente"
+          onchange="editing.ingredients[${n}].name=this.value">
+
+        <button
+          onclick="
+            editing.ingredients.splice(${n},1);
+            renderForm()
+          ">
+          ×
+        </button>
+
+      </div>
+
+      ${
+        i.unit==="OTRA / ESCRIBIR"
+        ?`
+        <input
+          style="
+            width:100%;
+            border:2px solid var(--ink);
+            padding:9px;
+            background:white;
+            margin:-2px 0 8px
+          "
+          placeholder="Escribe la unidad"
+          value="${esc(i.customUnit||"")}"
+          onchange="editing.ingredients[${n}].customUnit=this.value">
+        `
+        :""
+      }
+
+    `).join("")
+  }
+
+  <button
+    class="btn"
+    onclick="
+      editing.ingredients.push({
+        qty:'',
+        unit:'g',
+        name:''
+      });
+      renderForm()
+    ">
+    + AÑADIR INGREDIENTE
+  </button>
+
+  <div class="field">
+
+    <label>NOTAS (OPCIONAL)</label>
+
+    <textarea
+      onchange="editing.notes=this.value">${esc(r.notes)}</textarea>
+
+  </div>
+
+  ${formActions()}
+  `;
+}
+
+function changeUnit(n,value){
+
+  editing.ingredients[n].unit=value;
+
+  if(value!=="OTRA / ESCRIBIR"){
+    delete editing.ingredients[n].customUnit;
+  }
+
+  renderForm();
+}
+
+function formSteps(r){
+
+  return `
+  <h2>PREPARACIÓN</h2>
+
+  ${
+    r.steps.map((s,n)=>`
+
+      <div class="field">
+
+        <label>
+          ${String(n+1).padStart(2,"0")}
+        </label>
+
+        <textarea
+          onchange="editing.steps[${n}]=this.value">${esc(s)}</textarea>
+
+        <button
+          class="btn"
+          onclick="
+            editing.steps.splice(${n},1);
+            renderForm()
+          ">
+          ELIMINAR
+        </button>
+
+      </div>
+
+    `).join("")
+  }
+
+  <button
+    class="btn"
+    onclick="
+      editing.steps.push('');
+      renderForm()
+    ">
+    + AÑADIR PASO
+  </button>
+
+  ${formActions()}
+  `;
+}
+
+function formReview(r){
+
+  return `
+  <h2>REVISAR RECETA</h2>
+
+  <h1>
+    ${esc(r.name||"SIN TÍTULO")}
+  </h1>
+
+  <div class="meta">
+    ${esc((r.categories||[]).join(" · "))}
+  </div>
+
+  <div class="meta" style="margin-top:7px">
+    CREADA POR ${esc(userName(r.owner))}
+  </div>
+
+  <div class="yellowbox">
+
+    ${r.initial} COMENSALES ·
+    ${r.time} MIN ·
+    ${esc(r.difficulty)}
+
+  </div>
+
+  <h3>INGREDIENTES</h3>
+
+  <ul>
+
+    ${
+      r.ingredients.map(i=>`
+        <li>
+          ${esc(i.qty)}
+          ${
+            i.unit==="OTRA / ESCRIBIR"
+            ?esc(i.customUnit||"")
+            :esc(i.unit)
+          }
+          ${esc(i.name)}
+        </li>
+      `).join("")
+    }
+
+  </ul>
+
+  <h3>PREPARACIÓN</h3>
+
+  ${
+    r.steps.map((s,i)=>`
+      <p>
+        <b>${i+1}.</b>
+        ${esc(s)}
+      </p>
+    `).join("")
+  }
+
+  <div class="actions">
+
+    <button
+      class="btn"
+      onclick="
+        step=3;
+        renderForm()
+      ">
+      ← ATRÁS
+    </button>
+
+    <button
+      class="btn primary"
+      onclick="finalSave()">
+      GUARDAR RECETA
+    </button>
+
+  </div>
+
+  <button
+    class="btn"
+    style="margin-top:10px"
+    onclick="saveDraft()">
+    GUARDAR Y CONTINUAR DESPUÉS
+  </button>
+  `;
+}
+
+function formActions(){
+
+  return `
+  <div class="actions">
+
+    <button
+      class="btn"
+      onclick="saveDraft()">
+      GUARDAR Y CONTINUAR DESPUÉS
+    </button>
+
+    ${
+      step>1
+      ?`
+        <button
+          class="btn"
+          onclick="
+            step--;
+            renderForm()
+          ">
+          ATRÁS
+        </button>
+      `
+      :""
+    }
+
+    <button
+      class="btn primary"
+      onclick="next(${step+1})">
+
+      ${step===3?"REVISAR":"SIGUIENTE"}
+
+    </button>
+
+  </div>
+  `;
+}
+
+function syncInfo(){
+
+  let r=editing;
+
+  r.name=
+    document.getElementById("name")?.value||
+    r.name;
+
+  r.min=
+    +document.getElementById("min")?.value||
+    r.min;
+
+  r.initial=
+    +document.getElementById("initial")?.value||
+    r.initial;
+
+  r.max=
+    +document.getElementById("max")?.value||
+    r.max;
+
+  r.time=
+    +document.getElementById("time")?.value||
+    r.time;
+
+  r.difficulty=
+    document.getElementById("difficulty")?.value||
+    r.difficulty;
+}
+
+function next(n){
+
+  if(step===1)syncInfo();
+
+  if(
+    n===2 &&
+    (
+      !editing.name||
+      editing.categories.length<1||
+      editing.initial<editing.min||
+      editing.initial>editing.max||
+      editing.time<=0
+    )
+  ){
+    alert("Completa correctamente la información obligatoria.");
+    return;
+  }
+
+  if(
+    n===3 &&
+    editing.ingredients.some(
+      i=>!i.name||i.qty===""
+    )
+  ){
+    alert("Cada ingrediente necesita nombre y cantidad.");
+    return;
+  }
+
+  if(
+    n===4 &&
+    editing.steps.some(
+      s=>!s.trim()
+    )
+  ){
+    alert("Todos los pasos deben tener texto.");
+    return;
+  }
+
+  step=n;
+  renderForm();
+}
+
+function renderForm(){
+  document.getElementById("root").innerHTML=formHTML();
+}
+
+function toggleFormCat(c){
+
+  editing.categories=
+    editing.categories.includes(c)
+    ?editing.categories.filter(x=>x!==c)
+    :[...editing.categories,c];
+
+  renderForm();
+}
+
+function saveDraft(){
+
+  if(step===1)syncInfo();
+
+  editing.progress=Math.max(20,step*25);
+  editing.draft=true;
+
+  drafts=drafts.filter(
+    x=>x.id!==editing.id
+  );
+
+  drafts.push(editing);
+
+  save();
+
+  alert("Guardado como borrador");
+
+  page="recipes";
+  render();
+}
+
+function finalSave(){
+
+  if(
+    editing.ingredients.some(
+      i=>!i.name||i.qty===""
+    )||
+    editing.steps.some(
+      s=>!s.trim()
+    )
+  ){
+    alert("Revisa los campos obligatorios.");
+    return;
+  }
+
+  editing.draft=false;
+  editing.servings=editing.initial;
+
+  recipes=recipes.filter(
+    x=>x.id!==editing.id
+  );
+
+  recipes.push(editing);
+
+  drafts=drafts.filter(
+    x=>x.id!==editing.id
+  );
+
+  save();
+
+  page="recipes";
+  render();
+}
+
+function photoFiles(){
+
+  document.getElementById("photoFile").click();
+}
+
+function photoCamera(){
+
+  let i=document.getElementById("photoFile");
+
+  i.setAttribute(
+    "capture",
+    "environment"
+  );
+
+  i.click();
+}
+
+function readPhoto(input){
+
+  let f=input.files[0];
+
+  if(!f)return;
+
+  let rd=new FileReader();
+
+  rd.onload=()=>{
+    editing.photo=rd.result;
+    renderForm();
+  };
+
+  rd.readAsDataURL(f);
+}
+
+/* Recuperación de recetas antiguas sin usuario */
+
+recipes.forEach(r=>{
+  if(!r.owner)r.owner=activeUser;
+});
+
+drafts.forEach(d=>{
+  if(!d.owner)d.owner=activeUser;
+});
+
+save();
+
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js");
+}
+
+render();
+</script>
+</body>
+</html>
